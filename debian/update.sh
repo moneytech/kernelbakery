@@ -65,6 +65,9 @@ cat <<-EOF >> $BUILDDIR/.config
 	CONFIG_IIO_MUX=m	# revpi compact ain mux
 	CONFIG_CAN_HI311X=m	# revpi con can
 	CONFIG_USB_DWC2=y	# alternative to dwc_otg
+	CONFIG_SERIAL_DEV_BUS=y	# pibridge
+	CONFIG_SERIAL_DEV_CTRL_TTYPORT=y#pibridge
+	CONFIG_SERIAL_DEV_MUX_PIBRIDGE=m#pibridge
 	CONFIG_RTL8XXXU_UNTESTED=y	# edimax ew-7811un
 	CONFIG_PREEMPTIRQ_EVENTS=y	# rt latency debugging
 	CONFIG_PREEMPT_TRACER=y		# rt latency debugging
@@ -131,6 +134,9 @@ cat <<-EOF >> $BUILDDIR/.config
 	CONFIG_IIO_MUX=m	# revpi compact ain mux
 	CONFIG_CAN_HI311X=m	# revpi con can
 	CONFIG_USB_DWC2=y	# alternative to dwc_otg
+	CONFIG_SERIAL_DEV_BUS=y	# pibridge
+	CONFIG_SERIAL_DEV_CTRL_TTYPORT=y#pibridge
+	CONFIG_SERIAL_DEV_MUX_PIBRIDGE=m#pibridge
 	CONFIG_RTL8XXXU_UNTESTED=y	# edimax ew-7811un
 	CONFIG_PREEMPTIRQ_EVENTS=y	# rt latency debugging
 	CONFIG_PREEMPT_TRACER=y		# rt latency debugging
