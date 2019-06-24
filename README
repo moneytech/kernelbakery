@@ -17,11 +17,12 @@ Intended usage:
     apt-get install gcc-arm-linux-gnueabihf
     apt-get install build-essential:native debhelper quilt
     git clone -b revpi-4.9 https://github.com/RevolutionPi/linux
+    apt-get -y install bc curl gcc git libssl-dev libncurse bison flex
     git clone https://github.com/RevolutionPi/piControl
     git clone https://github.com/RevolutionPi/kernelbakery
     cd kernelbakery
     LINUXDIR=$PWD/../linux PIKERNELMODDIR=$PWD/../piControl debian/update.sh
-    dpkg-buildpackage -a armhf -b -us -uc
+    sudo -E dpkg-buildpackage -a armhf -b -us -uc 
 
 This procedure was tested successfully on Debian stretch amd64, but YMMV.
 E.g. Ubuntu 16.04 is missing gcc-6, so instead of gcc-6-arm-linux-gnueabihf
