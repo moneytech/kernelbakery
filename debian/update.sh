@@ -14,8 +14,8 @@ rsync -aHAX \
 	--files-from=<(cd linux; find `find arch/arm -name include -o -name scripts -type d` -type f) linux/ $destdir/
 rsync -aHAX \
 	--files-from=<(cd $BUILDDIR; find arch/arm/include Module.symvers .config include scripts -type f) $BUILDDIR $destdir/
-find $destdir/scripts -type f | xargs file | egrep 'ELF .* x86-64' | cut -d: -f1 | xargs rm
-find $destdir/scripts -type f -name '*.cmd' | xargs rm
+find $destdir/scripts -type f | xargs file | egrep 'ELF .* x86-64' | cut -d: -f1 | xargs rm -f
+find $destdir/scripts -type f -name '*.cmd' | xargs rm -f
 ln -sf "/usr/src/linux-headers-$version" "headers/lib/modules/$version/build"
 
 }
@@ -71,6 +71,7 @@ cat <<-EOF >> $BUILDDIR/.config
 	CONFIG_HWLAT_TRACER=y		# rt latency debugging
 	#CONFIG_DEBUG_KERNEL=y		# lockdep debugging
 	#CONFIG_PROVE_LOCKING=y		# lockdep debugging
+	CONFIG_GPIO_PCA953X=m	# revpi connect flat leds
 EOF
 (cd linux; eval $make olddefconfig)
 (cd linux; eval $make -j8 zImage modules dtbs 2>&1 | tee /tmp/out)
@@ -92,8 +93,8 @@ rm -rf modules/*
 (cd linux; eval $make -j8 modules_install INSTALL_MOD_PATH=$INSTDIR/modules M=$PIKERNELMODDIR)
 (cd linux; eval $make -j8 modules_install INSTALL_MOD_PATH=$INSTDIR/modules)
 mv $INSTDIR/modules/lib/modules/* $INSTDIR/modules
-rm -r $INSTDIR/modules/lib
-rm $INSTDIR/modules/*/{build,source}
+rm -rf $INSTDIR/modules/lib
+rm -f $INSTDIR/modules/*/{build,source}
 
 # install CM1 dtbs
 [ -d $INSTDIR/boot/overlays ] || mkdir $INSTDIR/boot/overlays
@@ -137,6 +138,7 @@ cat <<-EOF >> $BUILDDIR/.config
 	CONFIG_HWLAT_TRACER=y		# rt latency debugging
 	#CONFIG_DEBUG_KERNEL=y		# lockdep debugging
 	#CONFIG_PROVE_LOCKING=y		# lockdep debugging
+	CONFIG_GPIO_PCA953X=m	# revpi connect flat leds
 EOF
 (cd linux; eval $make olddefconfig)
 (cd linux; eval $make -j8 zImage modules dtbs 2>&1 | tee /tmp/out7)
@@ -156,8 +158,8 @@ linux/scripts/mkknlimg $BUILDDIR/arch/arm/boot/zImage $INSTDIR/boot/kernel7.img
 (cd linux; eval $make -j8 modules_install INSTALL_MOD_PATH=$INSTDIR/modules M=$PIKERNELMODDIR)
 (cd linux; eval $make -j8 modules_install INSTALL_MOD_PATH=$INSTDIR/modules)
 mv $INSTDIR/modules/lib/modules/* $INSTDIR/modules
-rm -r $INSTDIR/modules/lib
-rm $INSTDIR/modules/*/{build,source}
+rm -rf $INSTDIR/modules/lib
+rm -f $INSTDIR/modules/*/{build,source}
 
 # install CM3 dtbs
 (cd linux; eval $make -j8 dtbs_install INSTALL_DTBS_PATH=/tmp/dtb.$$)
